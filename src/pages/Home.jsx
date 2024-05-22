@@ -1,22 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import HomeHero from "../components/HomeHero";
 import styled from "@emotion/styled";
-import left from "../assets/left.svg";
-import right from "../assets/right.svg";
 import PlaylistCard from "../components/PlaylistCard";
 import { useSelector, useDispatch } from "react-redux";
 import { getToken } from "../components/utilits";
-import { useState } from "react";
 import { create } from "../redux/authSlice";
-import { useEffect } from "react";
+
 function Home() {
   const [featured, setFeatured] = useState([]);
+  const [loader, setLoader] = useState(false);
   const token = useSelector((state) => state.auth.token);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (token) {
+      setLoader(true);
       fetch(`${import.meta.env.VITE_API_MUSIC}browse/featured-playlists`, {
         method: "GET",
         headers: {
@@ -29,6 +27,9 @@ function Home() {
         })
         .catch((err) => {
           console.log(err);
+        })
+        .finally(() => {
+          setLoader(false);
         });
     } else {
       getToken()
@@ -40,6 +41,7 @@ function Home() {
         });
     }
   }, [token, dispatch]);
+
   const HomeWrapper = styled.div`
     width: 66%;
     background-color: #121212;
@@ -48,13 +50,15 @@ function Home() {
     max-width: 990px;
     width: 100%;
     margin: 0 auto;
-    padding: 21px;
     display: flex;
     align-items: center;
     gap: 31px;
     flex-wrap: wrap;
   `;
-  const CardWrapper = styled.div``;
+  const CardWrapper = styled.div`
+    margin: 0 auto;
+    padding: 21px;
+  `;
 
   const HomeWrapperh1 = styled.h1`
     font-family: "CircularStd", sans-serif;
@@ -67,6 +71,63 @@ function Home() {
     margin-bottom: 26px;
   `;
 
+  const Skeleton = styled.div`
+    background-color: #333;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 150%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(51, 51, 51, 0) 0%,
+        rgba(51, 51, 51, 0.2) 50%,
+        rgba(51, 51, 51, 0) 100%
+      );
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% {
+        left: -150%;
+      }
+      50% {
+        left: 100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+  `;
+
+  const SkeletonCard = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 200px;
+
+    .skeleton-image {
+      height: 160px;
+      width: 100%;
+    }
+
+    .skeleton-text-short {
+      height: 20px;
+      width: 50%;
+    }
+
+    .skeleton-text-long {
+      height: 20px;
+      width: 100%;
+    }
+  `;
+
   return (
     <HomeWrapper>
       <HomeHero>
@@ -75,10 +136,20 @@ function Home() {
       <CardWrapper>
         <HomeWrapperh1>Your top mixes</HomeWrapperh1>
         <Container>
-          {featured.length > 0 &&
-            featured.map((el, index) => {
-              return <PlaylistCard key={index} data={el}></PlaylistCard>;
-            })}
+          {loader
+            ? Array(8)
+                .fill()
+                .map((_, index) => (
+                  <SkeletonCard key={index}>
+                    <Skeleton className="skeleton-image" />
+                    <Skeleton className="skeleton-text-short" />
+                    <Skeleton className="skeleton-text-long" />
+                    <Skeleton className="skeleton-text-long" />
+                  </SkeletonCard>
+                ))
+            : featured.map((el, index) => (
+                <PlaylistCard key={index} data={el} />
+              ))}
         </Container>
       </CardWrapper>
     </HomeWrapper>

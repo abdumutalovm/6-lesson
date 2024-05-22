@@ -5,6 +5,7 @@ import library from "../assets/library.png";
 import liked_song from "../assets/liked_song.png";
 import plus from "../assets/plus.png";
 import home from "../assets/home.png";
+import { useNavigate } from "react-router-dom";
 
 const SideBarWrapper = styled.div`
   width: 17%;
@@ -70,10 +71,15 @@ const TopMenusCategory = styled.div`
   margin-bottom: 1472px;
 `;
 function LeftSideBar() {
+  const navigete = useNavigate();
   return (
     <SideBarWrapper>
       <TopMenusSideBar>
-        <MenuWrapper>
+        <MenuWrapper
+          onClick={() => {
+            navigete("/");
+          }}
+        >
           <img src={home} alt="home button icon" />
           <HomeText>Home</HomeText>
         </MenuWrapper>

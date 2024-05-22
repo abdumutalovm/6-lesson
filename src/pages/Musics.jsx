@@ -10,11 +10,15 @@ import repeat from "../assets/repeat.svg";
 import music_time from "../assets/music_time.svg";
 import volume_icon from "../assets/volume_icon.svg";
 import volume from "../assets/volume.svg";
+import gif from "../assets/play_music_vid.gif";
+import bg from "../assets/bg.png";
 
 const MusicsWrapper = styled.div`
   width: 66%;
   min-height: 100%;
   position: relative;
+  background: #121212;
+  margin: 0 auto;
 `;
 
 const BottomPlayer = styled.div`
@@ -71,6 +75,15 @@ const PlayerVolume = styled.div`
   gap: 5px;
 `;
 
+const TableHead = styled.table`
+  font-family: "CircularStd", sans-serif;
+  width: 986px;
+  color: #b3b3b3;
+  margin-top: 20px;
+  margin: 0 auto;
+  margin-left: 30px;
+`;
+const PlayerMusic = styled.div``;
 const Player = styled.div``;
 function Musics() {
   const params = useParams();
@@ -93,20 +106,43 @@ function Musics() {
 
   return (
     <MusicsWrapper>
-      <table>
+      <TableHead>
         <thead>
-          <tr>
+          <tr style={{ justifyContent: "space-between " }}>
             <th>#</th>
-            <th>Title</th>
+            <th style={{ marginRight: "100px" }}>Title</th>
             <th>Album</th>
-            <th>Date Added</th>
             <th>
-              <img src={clock} alt="clock img" />
+              <img src={clock} alt="" />
             </th>
           </tr>
         </thead>
-        <tbody>{/* Ro'yxat ma'lumotlarini joylashtiring */}</tbody>
-      </table>
+        <tbody>
+          <tr>
+            <td style={{ marginRight: "200px" }}>1</td>
+            <td style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <img src={bg} alt="" />
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <h1>Play It Safe</h1>
+                <h2>Julia Wolf</h2>
+              </span>
+            </td>
+
+            <td>Play It Safes</td>
+            <td style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+              <FaHeart color="green"></FaHeart>
+              <h1>2 : 12</h1>
+            </td>
+          </tr>
+        </tbody>
+      </TableHead>
+
       <BottomPlayer className="bottom_music-player">
         <MusicAbout>
           <MusicAbouth1>Play It Safe</MusicAbouth1>
