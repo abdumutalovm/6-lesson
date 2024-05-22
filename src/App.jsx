@@ -12,8 +12,8 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     getToken()
-      .then(res => {
-        dispatch(create(res));
+      .then(data => {
+        dispatch(create(data));
       })
       .catch(err => {
         console.log(err);

@@ -7,10 +7,11 @@ import plus from "../assets/plus.png";
 import home from "../assets/home.png";
 
 const SideBarWrapper = styled.div`
-  width: 310px;
+  width: 17%;
+  min-height: 100vh;
   background-color: #000;
   color: #b3b3b3;
-  padding-left: 30px;
+  padding-left: 25px;
   padding-right: 48px;
   padding-top: 70px;
 `;
@@ -43,7 +44,7 @@ const HomeText = styled.h1`
 `;
 
 const Hr = styled.hr`
-  width: 250px;
+  width: 210px;
   margin-top: 20px;
   background-color: #282828;
   height: 1px;
@@ -52,7 +53,7 @@ const Hr = styled.hr`
 `;
 
 const CategoryText = styled.h1`
-  font-size: 18px;
+  font-size: 15px;
   margin-bottom: 18px;
   cursor: pointer;
   &:hover {

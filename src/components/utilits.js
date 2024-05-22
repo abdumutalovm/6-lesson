@@ -1,43 +1,28 @@
 async function getToken() {
   function toTimestamp(expDate) {
-    // Given date string
     const dateString = expDate;
-
-    // Split the date and time parts
     const [datePart, timePart] = dateString.split(" ");
-
-    // Split the date into day, month, and year
-    const [day, month, year] = datePart.split(".").map(Number);
-
-    // Split the time into hours and minutes
-    const [hours, minutes] = timePart.split(":").map(Number);
-
-    // Create a Date object
-    const date = new Date(year, month - 1, day, hours, minutes);
-
-    // Get the timestamp (milliseconds since Unix epoch)
-    const timestamp = date.getTime();
+    const [day, month, year] = datePart.split(".");
+    const formattedDateString = `${month}/${day}/${year} ${timePart}`;
+    const dateObject = new Date(formattedDateString);
+    const timestamp = dateObject.getTime();
+    return timestamp;
   }
 
   function isExpiredToken() {
     let expireDate = localStorage.getItem("expireDate");
     if (!expireDate) {
-      return false;
+      return true;
     }
 
     let expDate = toTimestamp(expireDate);
     let currentDate = Date.now();
 
-    if (expDate < currentDate) {
-      return true;
-    }
-    return false;
+    return expDate < currentDate;
   }
 
-  isExpiredToken();
-
   if (
-    localStorage.getItem("expireDate") ||
+    !localStorage.getItem("expireDate") ||
     !localStorage.getItem("token") ||
     isExpiredToken()
   ) {
@@ -51,10 +36,20 @@ async function getToken() {
       },
       body: "grant_type=client_credentials",
     });
+
+    if (!resp.ok) {
+      throw new Error("Failed to fetch token");
+    }
+
     const auth = await resp.json();
     const expireDate = getOneHourLater();
     localStorage.setItem("expireDate", expireDate);
     localStorage.setItem("token", auth.access_token);
+
+    return {
+      date: expireDate,
+      token: auth.access_token,
+    };
   } else {
     return {
       date: localStorage.getItem("expireDate"),
@@ -74,7 +69,5 @@ function getOneHourLater() {
 
   return `${day}.${month}.${year} ${hours}:${minutes}`;
 }
-
-const oneHourLaterFormatted = getOneHourLater();
 
 export { getToken };
