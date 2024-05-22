@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-
+import clock from "../assets/clock.svg";
+import SpotifyPlayer from "react-spotify-player";
 function Musics() {
   const params = useParams();
   const token = useSelector((state) => state.auth.token);
@@ -20,7 +21,26 @@ function Musics() {
         });
     }
   }, []);
-  return <div>Musics</div>;
+  return (
+    <div>
+      <div>
+        <img src="" alt="" />
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Album</th>
+            <th>Date Added</th>
+            <th>
+              <img src={clock} alt="clock img" />
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  );
 }
 
 export default Musics;
