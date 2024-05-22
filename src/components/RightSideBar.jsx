@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 function RightSideBar() {
   const SideBarWrapper = styled.div`
-    width: 17%;
+    width: 310px;
     background-color: #000;
     color: #b3b3b3;
   `;

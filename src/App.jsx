@@ -5,11 +5,19 @@ import Musics from "./pages/Musics";
 import Layout from "./layouts/Layout";
 import { useEffect } from "react";
 import { getToken } from "./components/utilits";
-import styled from "@emotion/styled";
+import { create } from "./redux/authSlice";
+import { useDispatch } from "react-redux";
 
 function App() {
+  const dispatch = useDispatch();
   useEffect(() => {
-    getToken();
+    getToken()
+      .then(res => {
+        dispatch(create(res));
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, []);
   return (
     <div>
